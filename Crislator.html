@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head> 
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Crislator</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'Style.css') }}">
+        <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    </head>
+    <body>
+        <div class="container">
+            <h1>Crislator</h1>
+            <textarea id="inputText" placeholder="Estoy listo cris..."></textarea>
+            <button id="translateButton">Traducir</button>
+            <h2>Traduccion: </h2>
+            <textarea id="outputText" placeholder="Aqui lo que buscabas cris" readonly></textarea>
+        </div>
+        <script>
+        document.getElementById('translateButton').addEventListener('click', function() {
+            const inputText = document.getElementById('inputText').value;
+        
+            if (inputText ==="") {
+                alert("listo para ayudarte cris. ");
+                return;
+            }
+        
+            fetch('/translate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify({text:inputText})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('outputText').value = data.translatedText;
+                })
+                .catch(error => console.error('error', error));
+            });
+            </script>
+    </body>
+</html>
